@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-title">Edition du film de votre choix</h4>
+</div>
+<form [formGroup]="editForm" (ngSubmit)="submitForm(editForm)">
+  <div class="modal-boy">
+    <div class="container">
+      <div class="form-group">
+        <label for="titre">Titre</label>
+        <input type="text"
+               class="form-control"
+               formControlName="titre" />
+      </div>
+      <div class="form-group">
+        <label for="annee">Année</label>
+        <input type="text" class="form-control" formControlName="annee">
+      </div>
+      <div class="form-group">
+        <label for="genre">Genre</label>
+        <input type="text" class="form-control" formControlName="genre">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-danger pull-left"  (click)="ngbActiveModal.dismiss('Cross click')">
+      Annuler
+    </button>
+    <button class="btn btn-success"
+
+    (click)="submitForm(editForm)">
+      Valider
+    </button>
+  </div>
+</form>
