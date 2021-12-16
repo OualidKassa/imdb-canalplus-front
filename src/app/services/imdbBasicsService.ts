@@ -5,17 +5,16 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
-import {Observable, Subject, throwError} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, throwError} from 'rxjs';
 import {Basics} from "../models/basics";
 
 @Injectable({
   providedIn: 'root',
 })
 
-export class CrudBasicsService {
+export class ImdbBasicsService {
 
-  private sub = new Subject();
-  public subObserv$;
+
 
 
   apiUrl: string = 'http://localhost:3000/basics';
@@ -34,9 +33,7 @@ export class CrudBasicsService {
     }),
   };
 
-  constructor(private http: HttpClient) {
-    this.subObserv$ = this.sub as Observable<Basics>;
-  }
+  constructor(private http: HttpClient) {}
 
   // Create
   create(data: any): Observable<any> {
@@ -72,8 +69,14 @@ export class CrudBasicsService {
     return throwError('Something bad happened; please try again later.');
   }
 
-  sendDataUpdate(data: Basics) {
-    this.sub.next(data);
+  public notify = new BehaviorSubject<any>('');
+
+  notifyUpdateDataBasics$ = this.notify.asObservable();
+
+  public notifyOther(data: any) {
+    if (data) {
+      this.notify.next(data);
+    }
   }
 
 }

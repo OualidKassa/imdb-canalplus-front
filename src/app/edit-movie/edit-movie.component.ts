@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {CrudBasicsService} from "../services/crudBasicsService";
+import {ImdbBasicsService} from "../services/imdbBasicsService";
 import {Basics} from "../models/basics";
 
 @Component({
@@ -14,7 +14,7 @@ export class EditMovieComponent implements OnInit {
   @Input()
   data: any;
   editForm: any
-  constructor(private formBuilder: FormBuilder, public ngbActiveModal: NgbActiveModal, private dataService: CrudBasicsService) { }
+  constructor(private formBuilder: FormBuilder, public ngbActiveModal: NgbActiveModal, private dataService: ImdbBasicsService) { }
 
   formEditItem() {
     this.editForm = this.formBuilder.group({
@@ -22,8 +22,6 @@ export class EditMovieComponent implements OnInit {
       annee: new FormControl(this.data.startYear, Validators.required),
       genre: new FormControl(this.data.genres, Validators.required)
     });
-    console.log('Formulaire modale: ' +this.editForm.value.titre);
-    console.log('editForm: '+ this.editForm.value);
   }
 
   ngOnInit(): void {
@@ -33,12 +31,13 @@ export class EditMovieComponent implements OnInit {
 
   submitForm(dataToUpdate: any) {
     const basics = this.mappingDataFormToBasics(dataToUpdate);
-    console.log('basics send: ' + basics.genres + ' ' + basics.originalTitle);
     this.ngbActiveModal.dismiss("Cross click");
-    this.dataService.update(this.data.id, basics).subscribe(data => data = basics);
-    console.log('data send: ' + dataToUpdate.value.titre);
-    console.log('id send: ' + this.data.id);
-    this.dataService.sendDataUpdate(basics);
+    this.dataService.update(this.data.id, basics).subscribe(data => this.data = data);
+    this.refreshDataDashboardComponent();
+  }
+
+  refreshDataDashboardComponent(){
+    this.dataService.notifyOther({refresh: true});
   }
 
   mappingDataFormToBasics(dataForm: any): Basics{
@@ -50,5 +49,4 @@ export class EditMovieComponent implements OnInit {
     basics.img = this.data.img;
     return basics;
   }
-
 }

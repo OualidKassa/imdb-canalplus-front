@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CrudBasicsService } from '../services/crudBasicsService';
+import { ImdbBasicsService } from '../services/imdbBasicsService';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {EditMovieComponent} from "../edit-movie/edit-movie.component";
 import {Basics} from "../models/basics";
@@ -25,15 +25,21 @@ export class DashboardComponent implements OnInit {
   numberOfPagination = 1;
   searchText = '';
   refModel: any;
-  constructor(private crudBasicsService: CrudBasicsService, private ngModal: NgbModal) {}
+  constructor(private imdbBasicsService: ImdbBasicsService, private ngModal: NgbModal) {}
 
   ngOnInit(): void {
     this.printBasics();
+    this.imdbBasicsService.notifyUpdateDataBasics$.subscribe(res => {
+      if(res.refresh){
+        // get your grid data again. Grid will refresh automatically
+        this.printBasics();
+      }
+    })
 
   }
 
   printBasics() {
-    this.crudBasicsService.read().subscribe(
+    this.imdbBasicsService.read().subscribe(
       (data) => {
         this.basics = data;
       },
