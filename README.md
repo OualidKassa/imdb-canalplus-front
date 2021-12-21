@@ -1,3 +1,9 @@
+Don't forget to use (install if not) json-server with this command line json-server basics-data-server.json --no-cors, --nc  
+
+
+
+
+
 # ImbdCanalPlus
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.3.
